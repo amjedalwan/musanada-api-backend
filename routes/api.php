@@ -29,6 +29,7 @@ use App\Http\Controllers\{
 Route::middleware('throttle:60,1')->group(function () {
     Route::get('/opportunities', [OpportunityController::class, 'index']);
     Route::get('/opportunities/{id}', [OpportunityController::class, 'show']);
+    Route::get('/certificates/verify/{code}', [CertificateController::class, 'verify']);
 });
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -90,7 +91,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/applications/{id}/status', [OpportunityController::class, 'updateApplicantStatus']); // قبول أو رفض متقدم
         Route::get('/opportunities/{id}/total-hours', [OpportunityController::class, 'getOpportunityTotalHours']);
         // --- مسارات إدارة الشهادات ---
-        Route::get('/certificates/verify/{code}', [CertificateController::class, 'verify']);
         Route::get('/get-accepted-volunteers', [OpportunityController::class, 'getAcceptedVolunteers']);
         Route::get('/all-applications', [ApplicationController::class, 'allApplicationsForOrg']);
         // 1. جلب المتطوعين المؤهلين (بانتظار الإصدار)
@@ -115,7 +115,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // --- هـ. مسارات خاصة بالطالب (Student Section) ---
     Route::prefix('student')->group(function () {
-          Route::get('/', [StudentController::class, 'index']);
+        Route::get('/', [StudentController::class, 'index']);
         Route::get('/recommendations', [OpportunityController::class, 'recommended']);
         Route::get('/stats', [OpportunityController::class, 'getStats']);
         Route::get('/all-stats', [OpportunityController::class, 'getStudentStats']);
